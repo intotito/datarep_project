@@ -8,14 +8,15 @@ function Header(props) {
   console.log(props, props.state.navs);
   return (
     <Navbar bg="dark" variant="dark">
-      <Container className="row">
-        <Navbar.Brand href="#home" className="col-6">Analytics</Navbar.Brand>
+      <Container>
+        <Navbar.Brand href="#home">Analytics</Navbar.Brand>
         {
           props.state.navs.map((element, index) => {
-            return (<Nav key={element.title} className="offset-2 col-4 ">
+            return (<Nav key={element.title}>
               <Nav.Link href={element.url}>{element.title}</Nav.Link>
             </Nav>);
-          })}
+          })
+        }
 
       </Container>
     </Navbar>

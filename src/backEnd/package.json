@@ -19,5 +19,8 @@
     "Project"
   ],
   "author": "Otito Mbelu",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^6.8.1"
+  }
 }

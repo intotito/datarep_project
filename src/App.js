@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Footer } from './components/footer';
 import {SignIn} from './components/SignIn';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { SideNavBar } from './components/side_nav';
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
           */}
         <Routes>
           <Route path="/" element={<SignIn app_state={setStatus}/>} />
-          <Route path="/dashboard" element={<h1>Awumen</h1>} />
+          <Route path="/dashboard" element={<><SideNavBar/></>} />
           {/* 
             <Route path="/create" element={<Create/>} />
             <Route path="/edit/:id" element={<Edit/>}/> */}

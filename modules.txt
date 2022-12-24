@@ -1,0 +1,2 @@
+npm install -g yarn
+yarn add feather-icons-react
