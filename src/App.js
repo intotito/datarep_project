@@ -17,7 +17,8 @@ function App() {
     setStatus] = useState({
       status: 0,
       navs: [
-        { title: 'Sign In', url: '#' }
+        { title: 'Sign In', url: '#' },
+        {title: 'About Us', rul: '#'}
       ],
     });
   console.log(status);
@@ -32,8 +33,8 @@ function App() {
           * 3 - /read Page that displays the Read component.
           */}
         <Routes>
-          <Route path="/" element={<SignIn/>} />
-         
+          <Route path="/" element={<SignIn app_state={setStatus}/>} />
+          <Route path="/dashboard" element={<h1>Awumen</h1>} />
           {/* 
             <Route path="/create" element={<Create/>} />
             <Route path="/edit/:id" element={<Edit/>}/> */}

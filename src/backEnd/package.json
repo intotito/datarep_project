@@ -1,0 +1,23 @@
+{
+  "name": "analytics",
+  "version": "1.0.0",
+  "description": "Data Representation & Querying Project 2022 - SAP MERN Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MERN",
+    "Data",
+    "Rep",
+    "Data",
+    "Querying",
+    "ATU",
+    "2022",
+    "Year",
+    "3",
+    "Project"
+  ],
+  "author": "Otito Mbelu",
+  "license": "ISC"
+}
