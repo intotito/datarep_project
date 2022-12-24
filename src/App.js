@@ -7,6 +7,7 @@ import { Footer } from './components/footer';
 import {SignIn} from './components/SignIn';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SideNavBar } from './components/side_nav';
+import { AddUser } from './components/add_user';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SignIn app_state={setStatus}/>} />
           <Route path="/dashboard" element={<><SideNavBar/></>} />
+          <Route path="/adduser" element={<AddUser/>} />
           {/* 
             <Route path="/create" element={<Create/>} />
             <Route path="/edit/:id" element={<Edit/>}/> */}

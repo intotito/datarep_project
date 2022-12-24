@@ -3,10 +3,16 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const app = express()
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+/* // parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false}))
 // parse application/json
 app.use(bodyParser.json())
+// Using middleware to encode url for post parsing */
+
+app.use(express.urlencoded({
+    extended: true
+}))
+app.use(express.json());
 const port = 4000;
 
 app.use(cors());
@@ -71,6 +77,38 @@ app.get('/api/users', (req, res) => {
         res.status(404).send(error);
     });
 })
+
+app.post('/api/adduser', (req, res) => {
+    console.log("Post request recieved at api/adduser", req);
+    createNewUser(req.body)
+    .then((data) => {
+        console.log('post ok', data);
+        res.status(200).send(data);
+    })
+    .catch((error) => {
+        console.log('error post', error);
+        res.send(error);
+    });
+})
+
+const createNewUser = function(body){
+    return new Promise((resolve, reject) => {
+        console.log("Create user result", body);
+        userModel.create({
+            username: body.username,
+            url: body.url,
+            avatar: body.avatar
+        }, (err, data) => {
+            if(err){
+                reject(err);
+            } else {
+                console.log("User created", data);
+                resolve(data);
+            }
+        });
+        
+    })
+}
 
 const getSavedUsers = function(){
     return new Promise((resolve, reject) => {

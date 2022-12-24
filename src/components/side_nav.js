@@ -73,10 +73,10 @@ function SideNavBar(props) {
                         </h6>
                         <ul className="nav flex-column mb-2">
                             <li className="nav-item">
-                                <a className="nav-link" href="#">
+                                <Link to={'/adduser'} className="nav-link">
                                     <Icon.PlusCircle/>
                                     Add User
-                                </a>
+                                </Link>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="#">
