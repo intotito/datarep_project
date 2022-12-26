@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
  * The Add User Component Displays form with relevant fields to add a new user.
  * @returns {JSX.Element} - Shows Form for creating a new user in the Application. 
  */
-function AddUser(props) {
+function EditUser(props) {
     console.log("Add USer component");
     const[username, setUsername] = useState('');
     const[url, setUrl] = useState('');
@@ -18,21 +18,21 @@ function AddUser(props) {
     const navigate = useNavigate();
     const handleSubmitEvent = function(event){
         event.preventDefault();
-        const newUser = {
+        const editedUser = {
             username: username,
             url: url,
             avatar: avatar
         }
         console.log("form submitted");
-        console.log('New user', newUser);
-        axios.post("http://localhost:4000/api/adduser", newUser)
-        .then((res) => {
+        console.log('New user', editedUser);
+   /*     axios.put("http://localhost:4000/api/edituser", editedUser)
+         .then((res) => {
             console.log(res);
             navigate('/dashboard');
         })
         .catch((error) => {
             console.log(error);
-        })
+        }) */
     }
 
     return (
@@ -40,8 +40,8 @@ function AddUser(props) {
         <form onSubmit={handleSubmitEvent}>
             <div className="row mt-5">
                 <div className='col-md-8 offset-md-2 col-lg-6 offset-lg-3 form-signin'>
-                    <Icon.UserPlus size={72} />
-                    <h1 className="h3 mb-3 font-weight-normal">Save New User to Track</h1>
+                    <Icon.Edit3 size={72} />
+                    <h1 className="h3 mb-3 font-weight-normal">Edit Saved User</h1>
 
                     <div className="col-10 offset-1 my-4">
 
@@ -73,4 +73,4 @@ function AddUser(props) {
 
     )
 }
-export { AddUser }
+export { EditUser }

@@ -5,18 +5,13 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
  * @returns {JSX.Element} - Header to be rendered on the Web Application page
  */
 function Header(props) {
-  console.log(props, props.state.navs);
+  // console.log(props, props.state.navs);
   return (
-    <Navbar bg="dark" variant="dark">
-      <Container>
+    <Navbar bg="dark" variant="dark" className='row px-5'>
+      <Container className='d-flex justify-content-between'>
         <Navbar.Brand href="#home">Analytics</Navbar.Brand>
-        {
-          props.state.navs.map((element, index) => {
-            return (<Nav key={element.title}>
-              <Nav.Link href={element.url}>{element.title}</Nav.Link>
-            </Nav>);
-          })
-        }
+        
+        {props.user && <div><Navbar.Text className='px-3'>{props.user.username}</Navbar.Text><Navbar.Text className='px-3'><a  href="#home">SignOut</a></Navbar.Text></div>}
 
       </Container>
     </Navbar>

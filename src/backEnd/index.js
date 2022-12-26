@@ -35,14 +35,38 @@ async function main() {
 }
 const userSchema = new mongoose.Schema({
     username: String,
-    url: String,
-    avatar: String
+    id: Number,
+    login: String,
+    avatar_url: String,
+    html_url: String,
+    followers_url: String,
+    following_url: String,
+    repos_url: String,
+    name: String,
+    company: String,
+    location: String,
+    created_at: String
 });
 
+const friendsSchema = new mongoose.Schema({
+    username: String,
+    id: Number,
+    login: String,
+    avatar_url: String,
+    html_url: String,
+    followers_url: String,
+    following_url: String,
+    repos_url: String,
+    name: String,
+    company: String,
+    location: String,
+    created_at: String
+})
 
 
 
 const userModel = mongoose.model('users', userSchema);
+const friendsModel = mongoose.model('friends', friendsSchema);
 
 /* 
 userModel.create({
@@ -65,62 +89,61 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 });
 
-app.get('/api/users', (req, res) => {
+app.get('/api/user', (req, res) => {
     console.log("GET Request recieved at api/users")
-    getSavedUsers()
-    .then((data) => {
-        console.log('get ok', data);
-        res.status(200).send(data);
-    })
-    .catch((error) => {
-        console.log('get bad', error);
-        res.status(404).send(error);
-    });
+    getSavedUser()
+        .then((data) => {
+            console.log('get ok', data);
+            let sendBack = {
+                size: data.length,
+                user: data[0]            };
+            res.status(200).send(sendBack);
+        })
+        .catch((error) => {
+            console.log('get bad', error);
+            res.status(404).send(error);
+        });
 })
 
 app.post('/api/adduser', (req, res) => {
     console.log("Post request recieved at api/adduser", req);
     createNewUser(req.body)
-    .then((data) => {
-        console.log('post ok', data);
-        res.status(200).send(data);
-    })
-    .catch((error) => {
-        console.log('error post', error);
-        res.send(error);
-    });
+        .then((data) => {
+            console.log('post ok', data);
+            res.status(200).send(data);
+        })
+        .catch((error) => {
+            console.log('error post', error);
+            res.send(error);
+        });
 })
 
-const createNewUser = function(body){
+const createNewUser = function (body) {
     return new Promise((resolve, reject) => {
         console.log("Create user result", body);
-        userModel.create({
-            username: body.username,
-            url: body.url,
-            avatar: body.avatar
-        }, (err, data) => {
-            if(err){
+        userModel.create(body, (err, data) => {
+            if (err) {
                 reject(err);
             } else {
                 console.log("User created", data);
                 resolve(data);
             }
         });
-        
+
     })
 }
 
-const getSavedUsers = function(){
+const getSavedUser = function () {
     return new Promise((resolve, reject) => {
         userModel.find((err, data) => {
             console.log("User model result", data);
-            if(err){
+            if (err) {
                 reject(err);
             } else {
                 console.log("Saved Users", data);
                 resolve(data);
             }
-            
+
         })
     });
 }

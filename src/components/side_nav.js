@@ -3,62 +3,75 @@ import { Link } from 'react-router-dom';
 import * as Icon from 'react-feather';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 
 /**
  * The Header component. Displays the left side Navigation Bar of theWeb Application
  * @returns {JSX.Element} - Side Navigation bar to be rendered on the Web Application page
  */
 function SideNavBar(props) {
-    const [users, setUsers] = useState([]);
-    const [updated, setUpdated] = useState(false);
+    console.log("side nav-bar loaded");
+    const [friends, setFriends] = useState([]);
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         console.log("Use Effect")
-        axios.get('http://localhost:4000/api/users/')
+        axios.get('http://localhost:4000/api/user/')
             .then((response) => {
                 // Assign Response data to the arrays using useState.
-                let us = [];
-                response.data.forEach(u => {
-                    us.push(u);
-                });
-                setUsers(us);
+                console.log("Weting", response);
+                if(response.data.size == 0){
+                    console.log("Before navigate", response.data);
+                    navigate('/signin');
+                }
+                setUser(response.data.user);
             })
             .catch(function (error) {
                 console.log(error);
+                navigate('/signin');
             })
     }, []);
     console.log(props);
-    return (
-        <div className="container-fluid">
-            <div className="row">
-                <nav className="col-md-2 d-none d-md-block bg-light sidebar">
-                    <div className="sidebar-sticky">
+    console.log("User", user);
+/*     if (user == null)
+        return (<Navigate to="/signin" />);
+ */    return (
+        <div className="container col-md-2 col-sm-4">
+            <div className="row d-flex flex-column sidebar">
+                <nav className="col-12 bg-light sidebar">
+                    <div>
                         <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>Logged In</span>
                             <a className="d-flex align-items-center text-muted" href="#">
                                 <span data-feather="plus-circle"></span>
                             </a>
                         </h6>
-                        <div className="nav-item">
+                        <div className="nav-item d-flex ps-3 pt-2">
                             <a className="nav-link active" href="#">
                                 <Icon.Users />
-                                User <span className="sr-only">(current)</span>
+                                <span className="ms-2">User {user && <span>{'(' + user.username + ')'}</span>}</span>
                             </a>
                         </div>
                         <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                                <span>Saved Users</span>
-                                <a className="d-flex align-items-center text-muted" href="#">
-                                    <span data-feather="plus-circle"></span>
-                                </a>
-                            </h6>
-                        <ul className="nav flex-column pull-left">
+                            <span>Saved Users</span>
+                            <a className="d-flex align-items-center text-muted" href="#">
+                                <span data-feather="plus-circle"></span>
+                            </a>
+                        </h6>
+                        <ul className="nav d-flex flex-column ps-3 pt-2">
                             {
-                                users.map((user, index) => {
+                                friends.map((user, index) => {
                                     return (
                                         <li className="nav-item" key={user._id}>
-                                            <a className="nav-link" href="#">
-                                                <Icon.Users />
-                                                {user.username}
-                                            </a>
+                                            <div className="d-flex">
+                                                <a className="nav-link" href="#">
+                                                    <Icon.Users />
+                                                    <span className="ms-2">{user.username}</span>
+                                                </a>
+                                            </div>
                                         </li>
                                     );
                                 })
@@ -71,30 +84,30 @@ function SideNavBar(props) {
                                 <span data-feather="plus-circle"></span>
                             </a>
                         </h6>
-                        <ul className="nav flex-column mb-2">
+                        <ul className="nav mb-2 ms-2 d-flex flex-column">
                             <li className="nav-item">
-                                <Link to={'/adduser'} className="nav-link">
-                                    <Icon.PlusCircle/>
-                                    Add User
-                                </Link>
+                                <div className="d-flex">
+                                    <Link to={'/adduser'} className="nav-link">
+                                        <Icon.PlusCircle />
+                                        <span className="ms-2">Add User</span>
+                                    </Link>
+                                </div>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <Icon.Edit/>
-                                    Modify User
-                                </a>
+                                <div className="d-flex">
+                                    <Link to={'/edituser'} className="nav-link">
+                                        <Icon.Edit />
+                                        <span className="ms-2">Modify User</span>
+                                    </Link>
+                                </div>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <Icon.BarChart2/>
-                                    Compare
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Year-end sale
-                                </a>
+                                <div className="d-flex">
+                                    <a className="nav-link" href="#">
+                                        <Icon.BarChart2 />
+                                        <span className="ms-2">Compare</span>
+                                    </a>
+                                </div>
                             </li>
                         </ul>
                     </div>

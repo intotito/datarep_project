@@ -6,10 +6,8 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
  */
 function Footer(props) {
     return (
-        <div>
-            <div className="w-100 bg-danger footer">
-                <span>Data Representation and Querying - MERN Single Page Application 2022</span>
-            </div>
+        <div className="w-100 bg-danger footer row">
+            <span>Data Representation and Querying - MERN Single Page Application 2022</span>
         </div>
     );
 }

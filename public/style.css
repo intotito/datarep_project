@@ -1,7 +1,8 @@
 .footer {
-    position: absolute;
-    bottom: 0;
     left: 0;
+    bottom: 0;
+    position:absolute;
+    flex-direction: column;
     font-family: monospace;
     height: 40px;
     border-top: solid red;
@@ -9,10 +10,37 @@
     border-bottom: #A00;
     border-right: #A00;
     color: whitesmoke;
-    padding-left: 20px;
+    margin-top: auto;
 }
 .form-signin{
     padding: 20px;
     border:solid 1px #500;
 }
+.sidebar{
+    align-items: stretch;
+    height:100%;
+}
+html{
+    position:relative;
+    min-height: 100%;
+}
 
+.scrollable{
+    position: absolute;
+    overflow-y: scroll;
+  }
+  .apasia {
+    color: white;
+    font-size: 24px;
+    padding-bottom: 20px;
+    padding-top: 18px;
+  }
+  .akataka:nth-child(2n+1) {
+    background: green;
+  }
+  .odogwu:nth-child(2n+2) {
+    background: black;
+  }
+.scrollable{
+    height: 200px;
+}
