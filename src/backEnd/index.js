@@ -155,16 +155,29 @@ app.put('/api/editUser/:id', (req, res) => {
         })
 })
 
+app.delete('/api/deleteFriend/:id', (req, res) => {
+    console.log('Delete request recieved at aip/deleteFriend');
+    deleteUser(req.params.id)
+        .then((data) => {
+            console.log('delete friend ok', data);
+            res.status(200).send(data);
+        })
+        .catch(error => {
+            console.log('error deleteFriend', error);
+            res.status(500).send(error);
+        })
+})
+
 app.post('/api/addfriend', (req, res) => {
     console.log("Post request recieved at api/addfriend");
     createNewFriend(req.body)
         .then((data) => {
             console.log('add friend post ok', data);
-            res.status(202).send(data);
+            res.status(200).send(data);
         })
         .catch((error) => {
             console.log('error addfriend');
-            res.send(error);
+            res.status(500).send(error);
         })
 });
 
@@ -213,6 +226,19 @@ const getSavedUser = function () {
 
         })
     });
+}
+
+const deleteUser = function(id){
+    console.log("Delte user", id);
+    return new Promise((resolve, reject) => {
+        friendsModel.findByIdAndDelete({_id:id}, (err, data) => {
+            if(err){
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        })
+    })
 }
 
 const editUser = function (req) {

@@ -18,7 +18,7 @@ function SideNavBar(props) {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    const friendSelected = function(id)  {
+    const friendSelected = function (id) {
         props.setCurrentUser(props.friends.find((f) => {
             return f.id == id;
         }));
@@ -27,6 +27,21 @@ function SideNavBar(props) {
     const userSelected = () => {
         console.log("Weting de happen", user)
         props.setCurrentUser(user);
+    }
+
+    const deleteUser = () => {
+        if (user.id != props.currentUser.id) {
+            if (window.confirm("Delete User '" + props.currentUser.username + "'?")) {
+                console.log('will attempt delte')
+                axios.delete('http://localhost:4000/api/deleteFriend/' + props.currentUser._id)
+                    .then(() => {
+                        props.setCurrentUser(user);
+                        window.location.reload();
+                    }).catch(error => {
+                        console.log(error);
+                    });
+            }
+        }
     }
 
     useEffect(() => {
@@ -76,7 +91,7 @@ function SideNavBar(props) {
                         <div className="nav-item d-flex ps-3 pt-2">
                             <a className="nav-link active" href="">
                                 <Icon.Users />
-                                <span className="ms-2" onClick={() => {userSelected()}}>User
+                                <span className="ms-2" onClick={() => { userSelected() }}>User
                                     {(user && (user.id == props.currentUser.id)) && <span className="ms-2 text-light badge bg-primary rounded-pill">{'(' + user.username + ')'}</span>}
                                     {(user && (user.id != props.currentUser.id)) && <span >{'(' + user.username + ')'}</span>}
                                 </span>
@@ -96,8 +111,8 @@ function SideNavBar(props) {
                                             <div className="d-flex">
                                                 <a className="nav-link" href="#">
                                                     <Icon.Users />
-                                                    {(user.id == props.currentUser.id) && <span onClick={() => {friendSelected(user.id)}} className="ms-2 text-light badge bg-primary rounded-pill">{user.username}</span>}
-                                                    {(user.id != props.currentUser.id) && <span onClick={() => {friendSelected(user.id)}} className="ms-2 text-dark">{user.username}</span>}
+                                                    {(user.id == props.currentUser.id) && <span onClick={() => { friendSelected(user.id) }} className="ms-2 text-light badge bg-primary rounded-pill">{user.username}</span>}
+                                                    {(user.id != props.currentUser.id) && <span onClick={() => { friendSelected(user.id) }} className="ms-2 text-dark">{user.username}</span>}
                                                 </a>
                                             </div>
                                         </li>
@@ -123,18 +138,20 @@ function SideNavBar(props) {
                             </li>
                             <li className="nav-item">
                                 <div className="d-flex">
-                                    <Link to={'/edituser'} className="nav-link">
+                                    <Link to={(user != null && user.id == props.currentUser.id ? '' : '/edituser')} className="nav-link">
                                         <Icon.Edit />
-                                        <span className="ms-2">Modify User</span>
+                                        {(user != null && user.id != props.currentUser.id) && <span className="ms-2">Modify User</span>}
+                                        {(user != null && user.id == props.currentUser.id) && <span className="ms-2 text-muted">Modify User</span>}
                                     </Link>
                                 </div>
                             </li>
                             <li className="nav-item">
                                 <div className="d-flex">
-                                    <a className="nav-link" href="#">
-                                        <Icon.BarChart2 />
-                                        <span className="ms-2">Compare</span>
-                                    </a>
+                                    <Link onClick={deleteUser} to={(user != null && user.id == props.currentUser.id ? '#' : '#')} className="nav-link">
+                                        <Icon.XCircle />
+                                        {(user != null && user.id != props.currentUser.id) && <span className="ms-2">Delete User</span>}
+                                        {(user != null && user.id == props.currentUser.id) && <span className="ms-2 text-muted">Delete User</span>}
+                                    </Link>
                                 </div>
                             </li>
                         </ul>

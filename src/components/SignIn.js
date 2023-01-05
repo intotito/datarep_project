@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 /**
  * The Sign In Component. Displays the Sign in page to the user
@@ -12,6 +13,21 @@ function SignIn(props) {
     const[user, setUser] = useState(null);
     const[pac, setPac] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log("Use Effect")
+        axios.get('http://localhost:4000/api/user/')
+            .then((response) => {
+                // Assign Response data to the arrays using useState.
+                if (response.data.size == 0) {
+                }
+                setUser(response.data.user);
+                props.setCurrentUser(response.data.user);
+                navigate('/dashboard');
+            })
+            .catch(function (error) {
+            })
+    }, []);
 
     const onChangeUser = (event) =>{
         setUser(event.target.value);
