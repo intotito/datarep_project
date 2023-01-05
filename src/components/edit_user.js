@@ -1,38 +1,40 @@
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Icon from 'react-feather';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 /**
- * The Add User Component Displays form with relevant fields to add a new user.
+ * The Edit User Component Displays form with relevant fields to edit an existing new user.
  * @returns {JSX.Element} - Shows Form for creating a new user in the Application. 
  */
 function EditUser(props) {
-    console.log("Add USer component");
-    const[username, setUsername] = useState('');
-    const[url, setUrl] = useState('');
-    const[avatar, setAvatar] = useState('');
+    console.log("Add USer component", props.currentUser);
+    // State variable to hold user informatioin
+    const [username, setUsername] = useState(props.currentUser.username);
+    const [url, setUrl] = useState(props.currentUser.html_url);
+    const [avatar, setAvatar] = useState(props.currentUser.avatar_url);
+
 
     const navigate = useNavigate();
-    const handleSubmitEvent = function(event){
+    const handleSubmitEvent = function (event) {
         event.preventDefault();
         const editedUser = {
             username: username,
-            url: url,
-            avatar: avatar
+            html_url: url,
+            avatar_url: avatar
         }
         console.log("form submitted");
         console.log('New user', editedUser);
-   /*     axios.put("http://localhost:4000/api/edituser", editedUser)
-         .then((res) => {
-            console.log(res);
-            navigate('/dashboard');
-        })
-        .catch((error) => {
-            console.log(error);
-        }) */
+        axios.put("http://localhost:4000/api/edituser/" + props.currentUser._id, editedUser)
+            .then((res) => {
+                console.log(res);
+                navigate('/dashboard');
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     return (
@@ -49,21 +51,21 @@ function EditUser(props) {
                             <div className="input-group-prepend" htmlFor="username">
                                 <span className="input-group-text bg-danger text-light">Username</span>
                             </div>
-                            <input type="text" onChange={(e) => setUsername(e.target.value)} className="form-control" name="username" placeholder="Name of Friend" id="username" />
+                            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="form-control" name="username" placeholder="Name of Friend" id="username" />
                         </div>
 
                         <div className="input-group mb-5">
                             <div className="input-group-prepend" htmlFor="url">
                                 <span className="input-group-text bg-danger text-light">Github URL</span>
                             </div>
-                            <input type="text" onChange={(e) => setUrl(e.target.value)} className="form-control" name="url" placeholder="https://github.com/gitUser2" id="url" />
+                            <input type="text"  value={url} onChange={(e) => setUrl(e.target.value)} className="form-control" name="url" placeholder="https://github.com/gitUser2" id="url" />
                         </div>
 
                         <div className="input-group mb-5">
                             <div className="input-group-prepend" htmlFor="avatar">
                                 <span className="input-group-text bg-danger text-light">User Avatar</span>
                             </div>
-                            <input type="text" onChange={(e) => setAvatar(e.target.value)} className="form-control" name="avatar" placeholder="Link to a cute avatar" id="avatar" />
+                            <input type="text" value={avatar} onChange={(e) => setAvatar(e.target.value)} className="form-control" name="avatar" placeholder="Link to a cute avatar" id="avatar" />
                         </div>
                     </div>
                     <input type="submit" className="btn btn-dark mt-4" value="Add User" />
@@ -71,6 +73,6 @@ function EditUser(props) {
             </div>
         </form >
 
-    )
+    );
 }
-export { EditUser }
+export { EditUser };

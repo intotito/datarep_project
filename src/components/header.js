@@ -5,16 +5,16 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
  * @returns {JSX.Element} - Header to be rendered on the Web Application page
  */
 function Header(props) {
-  // console.log(props, props.state.navs);
+  console.log("Props from Header", props);
   return (
     <Navbar bg="dark" variant="dark" className='row px-5'>
       <Container className='d-flex justify-content-between'>
-        <Navbar.Brand href="#home">Analytics</Navbar.Brand>
+        <Navbar.Brand href=".">Analytics</Navbar.Brand>
         
-        {props.user && <div><Navbar.Text className='px-3'>{props.user.username}</Navbar.Text><Navbar.Text className='px-3'><a  href="#home">SignOut</a></Navbar.Text></div>}
+        {props.user && <div><Navbar.Text className='px-3'>{props.user.user.username}</Navbar.Text><Navbar.Text className='px-3'><a  href="#home">SignOut</a></Navbar.Text></div>}
 
       </Container>
     </Navbar>
   );
 }
-export { Header };
+export { Header };  

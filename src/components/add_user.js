@@ -11,28 +11,70 @@ import { useNavigate } from 'react-router-dom';
  */
 function AddUser(props) {
     console.log("Add USer component");
-    const[username, setUsername] = useState('');
-    const[url, setUrl] = useState('');
-    const[avatar, setAvatar] = useState('');
+    // Different states to hold user values
+    const [username, setUsername] = useState('');
+    const [url, setUrl] = useState('');
+    const [avatar, setAvatar] = useState('');
 
     const navigate = useNavigate();
-    const handleSubmitEvent = function(event){
+/**
+ * @param {Object} newFriend - The new user to save
+ * Sends a http post request to server with information about a new user
+ * and navigates the user back to the dashboard on completion.
+ */
+    const saveFriendToDB = (newFriend) => {
+        axios.post('http://localhost:4000/api/addfriend', newFriend)
+            .then((response) => {
+                console.log("Add User", response);
+ //               props.setCurrentUser(newFriend);
+                navigate('/dashboard');
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+/**
+ * A callback event method that makes a http get request to fectch
+ * user information using git API. These information is used to populate
+ * the user information that will be saved in the database.
+ * @param {Event} event - Event object
+ */
+    const handleSubmitEvent = function (event) {
         event.preventDefault();
-        const newUser = {
-            username: username,
-            url: url,
-            avatar: avatar
-        }
-        console.log("form submitted");
-        console.log('New user', newUser);
-        axios.post("http://localhost:4000/api/adduser", newUser)
-        .then((res) => {
-            console.log(res);
-            navigate('/dashboard');
-        })
-        .catch((error) => {
+
+        axios({
+            method: "get",
+            url: `https://api.github.com/users/${url}`,
+            /*  headers: {
+                'Accept' : 'application/vnd.github+json',
+                'Authorization' : `Bearer ${pac}`,
+                'Content-Type': "application/json",
+            },  */
+        }).then((response) => {
+            console.log("Add user axios response", response);
+            let newFriend = {
+                username: username,
+                id: response.data.id,
+                login: response.data.login,
+                avatar_url: (avatar == null || avatar == '') ? response.data.avatar_url : avatar,
+                html_url: response.data.html_url,
+                followers_url: response.data.followers_url,
+                following_url: response.datafollowing_url,
+                repos_url: response.data.repos_url,
+                name: response.data.name,
+                company: response.data.company,
+                location: response.data.location,
+                created_at: response.data.created_at,
+                public_repos: response.data.public_repos,
+                followers: response.data.followers,
+                following: response.data.following
+            }
+
+            saveFriendToDB(newFriend);
+
+        }).catch(error => {
             console.log(error);
-        })
+        });
     }
 
     return (
@@ -54,9 +96,9 @@ function AddUser(props) {
 
                         <div className="input-group mb-5">
                             <div className="input-group-prepend" htmlFor="url">
-                                <span className="input-group-text bg-danger text-light">Github URL</span>
+                                <span className="input-group-text bg-danger text-light">Github Account</span>
                             </div>
-                            <input type="text" onChange={(e) => setUrl(e.target.value)} className="form-control" name="url" placeholder="https://github.com/gitUser2" id="url" />
+                            <input type="text" onChange={(e) => setUrl(e.target.value)} className="form-control" name="url" placeholder="gituser1" id="url" />
                         </div>
 
                         <div className="input-group mb-5">

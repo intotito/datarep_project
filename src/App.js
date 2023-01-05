@@ -55,9 +55,9 @@ function App() {
         <Routes>
           <Route path="/signin" element={<SignIn setCurrentUser={setCurrentUser} />} />
           <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path="/dashboard" element={<div className="row"><SideNavBar setFriends={setFriends} setCurrentUser={setCurrentUser} user={user} /><Dashboard currentUser={currentUser} /></div>} />
+          <Route path="/dashboard" element={<div className="row"><SideNavBar friends={friends} setFriends={setFriends} currentUser={currentUser} setCurrentUser={setCurrentUser} user={user} /><Dashboard currentUser={currentUser} /></div>} />
           <Route path="/adduser" element={<AddUser setFriends={setFriends} />} />
-          <Route path='/edituser' element={<><EditUser setFriends={setFriends} /></>} />
+          <Route path='/edituser' element={<><EditUser setFriends={setFriends} currentUser={currentUser} /></>} />
           {/* 
             <Route path="/create" element={<Create/>} />
             <Route path="/edit/:id" element={<Edit/>}/> */}

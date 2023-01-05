@@ -22,6 +22,9 @@ function SignIn(props) {
     const attemptSignIn = (event) => {
         console.log("Attempting sign in");
         event.preventDefault();
+        if(user == null || user == ''){
+            return;
+        }
 /*         const gitApi = axios.create({
             baseURL: 'https://api.github.com'
         });
@@ -60,7 +63,10 @@ function SignIn(props) {
                     name: response.data.name,
                     company: response.data.company,
                     location: response.data.location,
-                    created_at: response.data.created_at
+                    created_at: response.data.created_at,
+                    public_repos: response.data.public_repos,
+                    followers: response.data.followers,
+                    following: response.data.following
                 }
 
                 saveUserToDB(newUser);

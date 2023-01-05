@@ -24,6 +24,7 @@ app.use(function (req, res, next) {
 });
 
 const mongoose = require('mongoose');
+
 mongoose.set('strictQuery', false);
 main().catch(err => console.log(err));
 
@@ -45,7 +46,10 @@ const userSchema = new mongoose.Schema({
     name: String,
     company: String,
     location: String,
-    created_at: String
+    created_at: String,
+    public_repos: Number,
+    followers: Number,
+    following: Number
 });
 
 const friendsSchema = new mongoose.Schema({
@@ -60,7 +64,10 @@ const friendsSchema = new mongoose.Schema({
     name: String,
     company: String,
     location: String,
-    created_at: String
+    created_at: String,
+    public_repos: Number,
+    followers: Number,
+    following: Number
 })
 
 
@@ -96,13 +103,30 @@ app.get('/api/user', (req, res) => {
             console.log('get ok', data);
             let sendBack = {
                 size: data.length,
-                user: data[0]            };
+                user: data[0]
+            };
             res.status(200).send(sendBack);
         })
         .catch((error) => {
             console.log('get bad', error);
             res.status(404).send(error);
         });
+});
+
+app.get('/api/friends', (req, res) => {
+    console.log("Get request received at api/friends");
+    getFriends()
+        .then((data) => {
+            let sendBack = {
+                size: data.length,
+                data: data
+            }
+            res.status(200).send(sendBack);
+        })
+        .catch((error) => {
+            console.log('friends bad', error);
+            res.status(404).send(error);
+        })
 })
 
 app.post('/api/adduser', (req, res) => {
@@ -114,9 +138,35 @@ app.post('/api/adduser', (req, res) => {
         })
         .catch((error) => {
             console.log('error post', error);
-            res.send(error);
+            res.status(500).send(error);
         });
+});
+
+app.put('/api/editUser/:id', (req, res) => {
+    console.log("Put request received at api/editUser");
+    editUser(req)
+        .then((data) => {
+            console.log('put ok', data);
+            res.status(200).send(data);
+        })
+        .catch((error) => {
+            console.log('error put', error);
+            res.status(500).send(error);
+        })
 })
+
+app.post('/api/addfriend', (req, res) => {
+    console.log("Post request recieved at api/addfriend");
+    createNewFriend(req.body)
+        .then((data) => {
+            console.log('add friend post ok', data);
+            res.status(202).send(data);
+        })
+        .catch((error) => {
+            console.log('error addfriend');
+            res.send(error);
+        })
+});
 
 const createNewUser = function (body) {
     return new Promise((resolve, reject) => {
@@ -133,6 +183,23 @@ const createNewUser = function (body) {
     })
 }
 
+const createNewFriend = function (body) {
+    return new Promise((resolve, reject) => {
+        console.log("Create friend result", body);
+        friendsModel.create(body, (err, data) => {
+            if (err) {
+                console.log('Create Friend Error', err);
+                reject(err);
+            } else {
+                console.log("Friend created", data);
+                resolve(data);
+            }
+        })
+    })
+}
+
+
+
 const getSavedUser = function () {
     return new Promise((resolve, reject) => {
         userModel.find((err, data) => {
@@ -146,4 +213,36 @@ const getSavedUser = function () {
 
         })
     });
+}
+
+const editUser = function (req) {
+    console.log("Edit User", req.params.id, req.body);
+
+    return new Promise((resolve, reject) => {
+        friendsModel.findByIdAndUpdate(req.params.id, req.body,
+            (error, data) => {
+                if (error) {
+                    console.log(error);
+                    reject(error);
+                } else {
+                    console.log('Update successful', data);
+                    resolve(data);
+                } 
+
+            })
+    })
+}
+
+const getFriends = function () {
+    return new Promise((resolve, reject) => {
+        friendsModel.find((err, data) => {
+            console.log('Friend model result', data);
+            if (err) {
+                reject(err);
+            } else {
+                console.log('Friends', data);
+                resolve(data);
+            }
+        })
+    })
 }
