@@ -18,6 +18,10 @@ function EditUser(props) {
 
 
     const navigate = useNavigate();
+    /*
+    * This smethod handles the submit event by sending a put request to the server
+    * with the values of the edited user, using the user's id as request parameter
+    */
     const handleSubmitEvent = function (event) {
         event.preventDefault();
         const editedUser = {
@@ -68,7 +72,7 @@ function EditUser(props) {
                             <input type="text" value={avatar} onChange={(e) => setAvatar(e.target.value)} className="form-control" name="avatar" placeholder="Link to a cute avatar" id="avatar" />
                         </div>
                     </div>
-                    <input type="submit" className="btn btn-dark mt-4" value="Add User" />
+                    <input type="submit" className="btn btn-dark mt-4" value="Update User" />
                 </div>
             </div>
         </form >

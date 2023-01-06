@@ -155,6 +155,19 @@ app.put('/api/editUser/:id', (req, res) => {
         })
 })
 
+app.delete('/api/signout/', (req, res) => {
+    console.log('Sign out');
+    userModel.deleteMany({}, (err, data) => {
+        if(err){
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            console.log('Sign out ok');
+            res.status(200).send(data);
+        }
+    })
+})
+
 app.delete('/api/deleteFriend/:id', (req, res) => {
     console.log('Delete request recieved at aip/deleteFriend');
     deleteUser(req.params.id)

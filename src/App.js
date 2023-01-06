@@ -44,16 +44,18 @@ function App() {
   return (
 
     <div className="App">
-      <Header user={user} />
+
       <BrowserRouter>
+        <Header user={user}  setUser={setUser} />
         {
         /* Three different pages of the Web Application.
-          * 1 - Main Page that displays the MainComponent, Header and Footer.
-          * 2 - /create Page that displays the Create component.
-          * 3 - /read Page that displays the Read component.
+          * 1 - Main Page Signin
+          * 2 - Dashboard
+          * 3 - Edit user
+          * 4 - Add new user
           */}
         <Routes>
-          <Route path="/signin" element={<SignIn setCurrentUser={setCurrentUser} />} />
+          <Route path="/signin" element={<SignIn setCurrentUser={setCurrentUser}/>} />
           <Route path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<div className="row"><SideNavBar friends={friends} setFriends={setFriends} currentUser={currentUser} setCurrentUser={setCurrentUser} user={user} /><Dashboard currentUser={currentUser} /></div>} />
           <Route path="/adduser" element={<AddUser setFriends={setFriends} />} />
@@ -62,8 +64,9 @@ function App() {
             <Route path="/create" element={<Create/>} />
             <Route path="/edit/:id" element={<Edit/>}/> */}
         </Routes>
+        <Footer />
       </BrowserRouter>
-      <Footer />
+
     </div>
 
   );
