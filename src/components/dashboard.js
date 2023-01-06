@@ -22,11 +22,7 @@ function Dashboard(props) {
       axios({
         method: "get",
         url: props.currentUser.repos_url,
-        /*  headers: {
-            'Accept' : 'application/vnd.github+json',
-            'Authorization' : `Bearer ${pac}`,
-            'Content-Type': "application/json",
-        },  */
+        
       })
         .then((response) => {
           console.log("Response from get REpos", response.data);

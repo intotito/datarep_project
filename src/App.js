@@ -15,12 +15,18 @@ import { useEffect } from 'react';
 
 
 
-
+/**
+ * Base Functional Component of the Application. Hold global variables that are
+ * passed to other component for update scheduling and record keeping.
+ * @returns 
+ */
 function App() {
   const [user, setUser] = useState(null);
   const [friends, setFriends] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-
+/**
+ * Lifecycle hook to attempt initializing the user on creation of the app.
+ */
 
   useEffect(() => {
     console.log("Use Effect")

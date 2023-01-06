@@ -9,7 +9,10 @@ import { useNavigate } from 'react-router-dom';
 
 
 /**
- * The Header component. Displays the left side Navigation Bar of theWeb Application
+ * The SideNav component. Displays the left side Navigation Bar of theWeb Application
+ * This displays the list of users saved on the appliation and various actions that
+ * can be performed on the users. This component forms the base for navigating through 
+ * the Application.
  * @returns {JSX.Element} - Side Navigation bar to be rendered on the Web Application page
  */
 function SideNavBar(props) {
@@ -18,17 +21,20 @@ function SideNavBar(props) {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
+    // Callback function to set user click by matching the id with list of users through the props params.
     const friendSelected = function (id) {
         props.setCurrentUser(props.friends.find((f) => {
             return f.id == id;
         }));
     }
-
+    // Set the user through the props params to force reload of parent component
     const userSelected = () => {
-        console.log("Weting de happen", user)
         props.setCurrentUser(user);
     }
-
+/**
+ * This method deletes a user from the database by sending a HTTP delete request to the 
+ * server. The user is firstly prompted to confirm selection before deletion commences. 
+ */
     const deleteUser = () => {
         if (user.id != props.currentUser.id) {
             if (window.confirm("Delete User '" + props.currentUser.username + "'?")) {
@@ -43,7 +49,10 @@ function SideNavBar(props) {
             }
         }
     }
-
+/**
+ * Lifecycle Event hook event to load list of saved users and current user of the app.
+ * If a user cannot be found then the page is redirected to the sign in.
+ */
     useEffect(() => {
         console.log("Use Effect")
         axios.get('http://localhost:4000/api/user/')

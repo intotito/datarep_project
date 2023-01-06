@@ -13,7 +13,11 @@ function SignIn(props) {
     //   console.log(props.app_state);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
-
+/**
+ * A lifecycle hook that checks if there is an already registered user.
+ * If there is a previously registered user, the page is redirected to the 
+ * dashboard page automatically.
+ */
     useEffect(() => {
         console.log("Use Effect")
         axios.get('http://localhost:4000/api/user/')
@@ -33,17 +37,21 @@ function SignIn(props) {
     const onChangeUser = (event) => {
         setUser(event.target.value);
     }
-
+    /**
+     * Attempt to sign in a user to the Application. This method will fetch more information about 
+     * the user user git API before saving relevant fields to the MongoDB database.
+     */
     const attemptSignIn = (event) => {
         console.log("Attempting sign in");
         event.preventDefault();
         if (user == null || user == '') {
             return;
         }
-        /*         const gitApi = axios.create({
-                    baseURL: 'https://api.github.com'
-                });
-         */
+        /*
+        * Makes a HTTP post request for a new user to be created on the database.
+        * The user collection expects just a single document which is the user currently
+        * using the appllication.
+        */
         const saveUserToDB = (newUser) => {
             axios.post('http://localhost:4000/api/adduser', newUser)
                 .then((response) => {
@@ -55,14 +63,11 @@ function SignIn(props) {
                     console.log(error);
                 })
         }
+
         axios({
             method: "get",
             url: `https://api.github.com/users/${user}`,
-            /*  headers: {
-                'Accept' : 'application/vnd.github+json',
-                'Authorization' : `Bearer ${pac}`,
-                'Content-Type': "application/json",
-            },  */
+
         })
             .then((response) => {
                 console.log("Sign in Response from Server", response);
@@ -107,7 +112,7 @@ function SignIn(props) {
                 <label htmlFor="inputId" className="sr-only">Username</label>
                 <input type="text" id="inputId" className="form-control" placeholder="gitUser1" required onChange={onChangeUser} />
                 <div>
-                <img className="mt-3" src="https://seeklogo.com/images/G/github-logo-5F384D0265-seeklogo.com.png" alt="" width="72" height="72" />
+                    <img className="mt-3" src="https://seeklogo.com/images/G/github-logo-5F384D0265-seeklogo.com.png" alt="" width="72" height="72" />
                 </div>
                 {<Link to={'/dashboard'} className='btn btn-dark mt-5 mb-2' onClick={attemptSignIn}>Sign In</Link>}
             </form>

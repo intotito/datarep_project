@@ -34,7 +34,7 @@ function AddUser(props) {
             })
     }
 /**
- * A callback event method that makes a http get request to fectch
+ * A callback event method that makes a http get request to fetch more
  * user information using git API. These information is used to populate
  * the user information that will be saved in the database.
  * @param {Event} event - Event object
@@ -45,11 +45,7 @@ function AddUser(props) {
         axios({
             method: "get",
             url: `https://api.github.com/users/${url}`,
-            /*  headers: {
-                'Accept' : 'application/vnd.github+json',
-                'Authorization' : `Bearer ${pac}`,
-                'Content-Type': "application/json",
-            },  */
+            
         }).then((response) => {
             console.log("Add user axios response", response);
             let newFriend = {
